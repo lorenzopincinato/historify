@@ -3,8 +3,14 @@
   "env": {
     "browser": true
   },
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "simple-import-sort"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+
+    "sort-imports": "off",
+    "import/order": "off",
+    "simple-import-sort/sort": "error",
+
+    "react/jsx-curly-newline": "off"
   }
 }
