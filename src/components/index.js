@@ -1,4 +1,4 @@
 /* eslint-disable import/prefer-default-export */
-import PrivateRoute from './PrivateRoute'
+import Routes from './Routes'
 
-export { PrivateRoute }
+export { Routes }

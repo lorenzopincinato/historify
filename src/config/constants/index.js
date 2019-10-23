@@ -1,2 +1,2 @@
 /* eslint-disable import/prefer-default-export */
-export const login = '/login'
+export const loginPath = '/login'
