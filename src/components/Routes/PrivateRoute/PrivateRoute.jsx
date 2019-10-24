@@ -4,14 +4,13 @@ import React from 'react'
 import { Redirect, Route } from 'react-router-dom'
 
 import { loginPath } from '../../../config/constants'
-
-const isAuthenticated = true
+import { isAuthenticated } from '../../../services/spotifyAuthentication'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      isAuthenticated ? <Component {...props} /> : <Redirect to={{ pathname: loginPath }} />
+      isAuthenticated() ? <Component {...props} /> : <Redirect to={{ pathname: loginPath }} />
     }
   />
 )

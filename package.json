@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": false,
   "dependencies": {
+    "client-oauth2": "^4.2.5",
     "grommet": "^2.7.11",
     "grommet-icons": "^4.3.0",
     "prop-types": "^15.7.2",
@@ -10,6 +11,7 @@
     "react-dom": "^16.9.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.1.1",
+    "spotify-web-api-js": "^1.2.0",
     "styled-components": "^4.4.0"
   },
   "scripts": {
