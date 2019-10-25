@@ -1,31 +1,32 @@
 import { Box, Button, Text } from 'grommet'
 import { Book, Spotify } from 'grommet-icons'
+import PropTypes from 'prop-types'
 import React, { useEffect } from 'react'
 
 import {
   authenticate,
+  isAuthenticated,
   isAuthenticating,
   openAuthenticationPage,
 } from '../../services/spotifyAuthentication'
 
-const Login = () => {
+const Login = ({ history }) => {
   useEffect(() => {
-    if (isAuthenticating()) {
-      console.log('AUTHENTICATING')
+    if (isAuthenticated()) {
+      history.push('/')
+    }
 
+    if (isAuthenticating()) {
       authenticate()
         .then(() => {
-          console.log('AUTHENTICATED!')
+          history.push('/')
         })
         .catch(error => {
-          console.log(error)
+          // TODO: Show failed to authenticate custom message
+          window.alert(error)
         })
     }
-  }, [])
-
-  const handleLogin = () => {
-    openAuthenticationPage()
-  }
+  }, [history])
 
   return (
     <Box align="center" justify="center" fill>
@@ -41,10 +42,16 @@ const Login = () => {
         hoverIndicator={{ color: '#1ed760' }}
         color="#1db954"
         primary
-        onClick={handleLogin}
+        onClick={openAuthenticationPage}
       />
     </Box>
   )
+}
+
+Login.propTypes = {
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 }
 
 export default Login

@@ -39,21 +39,9 @@ const isAuthenticating = () => {
 }
 
 const isAuthenticated = () => {
-  const accessToken = getAccessToken()
-
-  if (accessToken !== null) {
-    spotifyApi.setAccessToken(accessToken)
-    spotifyApi
-      .getMe()
-      .then(() => {
-        return true
-      })
-      .catch(() => {
-        clearAccessToken()
-        return false
-      })
+  if (getAccessToken() !== null) {
+    return true
   }
-
   return false
 }
 

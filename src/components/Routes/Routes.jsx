@@ -3,13 +3,17 @@ import React from 'react'
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
 import { loginPath } from '../../config/constants'
-import { Login } from '../../pages'
+import { Login, RecentlyPlayed } from '../../pages'
+import PrivateRoute from './PrivateRoute'
 
 const Routes = () => (
   <BrowserRouter>
     <Switch>
       <Route path={loginPath} component={Login} />
-      <Redirect to={loginPath} />
+
+      <PrivateRoute path="/recentlyPlayed" component={RecentlyPlayed} />
+
+      <Redirect to="/recentlyPlayed" />
     </Switch>
   </BrowserRouter>
 )
