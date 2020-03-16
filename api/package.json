@@ -1,0 +1,26 @@
+{
+  "name": "historify-api",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lorenzopincinato/historify.git",
+    "directory": "api"
+  },
+  "author": {
+    "email": "lorenzopincinato@gmail.com",
+    "name": "Lorenzo Pincinato",
+    "url": "https://lorenzopincinato.me/"
+  },
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
+  }
+}
