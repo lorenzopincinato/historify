@@ -1,22 +1,12 @@
 import React from 'react';
+import { ThemeProvider, Text } from '@chakra-ui/core';
+import theme from './config/theme';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Text>Historify</Text>
+    </ThemeProvider>
   );
 }
 
