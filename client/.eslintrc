@@ -45,5 +45,8 @@
     "FileReader": true,
     "Blob": true,
     "navigator": true
+  },
+  "settings": {
+    "import/extensions": [".js", ".jsx"]
   }
 }

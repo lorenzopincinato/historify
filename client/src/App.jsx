@@ -1,5 +1,6 @@
 import React from 'react';
-import { ThemeProvider, Text } from '@chakra-ui/core';
+import { Text, ThemeProvider } from '@chakra-ui/core';
+
 import theme from './config/theme';
 
 function App() {
