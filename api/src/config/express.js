@@ -1,8 +1,11 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
-const routes = require('../routes');
+const cookieParser = require('cookie-parser');
+
 const consign = require('consign');
+
+const routes = require('../routes');
 
 const app = express();
 
@@ -12,6 +15,8 @@ consign()
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cookieParser());
 
 app.use('/api/', routes);
 
