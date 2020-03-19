@@ -1,9 +1,9 @@
 const querystring = require('querystring');
 
-const authorization = require('../services/authorization');
+const authorize = require('../services/authorize');
 
 async function redirectToLogin(req, res) {
-  const { stateCookie, loginUrl } = authorization.getStateCookieAndLoginUrl();
+  const { stateCookie, loginUrl } = authorize.getStateCookieAndLoginUrl();
 
   res.cookie(stateCookie.key, stateCookie.value);
   res.redirect(loginUrl);
@@ -14,7 +14,7 @@ async function handleLoginCallback(req, res) {
     const {
       acccessToken,
       refreshToken
-    } = await authorization.getAccessAndRefreshToken(
+    } = await authorize.getAccessAndRefreshToken(
       req.query.code || null,
       req.query.state || null,
       req.cookies ? req.cookies['spotify_auth_state'] : null
@@ -36,7 +36,7 @@ async function handleLoginCallback(req, res) {
 
 async function refreshAccessToken(req, res) {
   try {
-    const accessToken = await authorization.refreshAccessToken(
+    const accessToken = await authorize.refreshAccessToken(
       req.query.refresh_token
     );
 
