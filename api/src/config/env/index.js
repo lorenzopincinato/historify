@@ -11,5 +11,8 @@ module.exports = {
     redirectUri:
       process.env.SPOTIFY_REDIRECT_URI ||
       'http://localhost:8080/api/authorize/callback'
+  },
+  authorize: {
+    redirectUris: process.env.AUTHORIZE_REDIRECT_URIS.split(',') || []
   }
 };

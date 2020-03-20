@@ -1,11 +1,12 @@
 const querystring = require('querystring');
 const axios = require('axios');
-const { spotify } = require('../config/env');
+const { spotify, authorize } = require('../config/env');
 
 const { generateRandomString } = require('../utils/string');
 
-function getStateCookieAndLoginUrl() {
-  const stateKey = 'spotify_auth_state';
+function getCookiesAndLoginUrl(redirectUri) {
+  validateRedirectUri(redirectUri);
+
   const state = generateRandomString(16);
 
   const loginUrl =
@@ -19,14 +20,17 @@ function getStateCookieAndLoginUrl() {
     });
 
   return {
-    stateCookie: { key: stateKey, value: state },
+    cookies: { spotify_auth_state: state, historify_redirect_uri: redirectUri },
     loginUrl: loginUrl
   };
 }
 
-async function getAccessAndRefreshToken(code, state, storedState) {
-  if (state === null || state !== storedState)
-    throw new Error('state_mismatch');
+async function getAccessAndRefreshToken(code, state, cookies) {
+  if (cookies === null) throw new Error('invalid_cookies');
+
+  validateRedirectUri(cookies['historify_redirect_uri']);
+
+  validateState(cookies['spotify_auth_state'], state);
 
   const body = {
     code: code,
@@ -54,7 +58,8 @@ async function getAccessAndRefreshToken(code, state, storedState) {
 
     return {
       accessToken: response.data.access_token,
-      refreshToken: response.data.refresh_token
+      refreshToken: response.data.refresh_token,
+      redirectUri: cookies['historify_redirect_uri']
     };
   } catch (err) {
     console.log(err);
@@ -93,8 +98,17 @@ async function refreshAccessToken(refreshToken) {
   }
 }
 
+function validateRedirectUri(redirectUri) {
+  if (!redirectUri || !authorize.redirectUris.includes(redirectUri))
+    throw new Error('invalid_redirect_uri');
+}
+
+function validateState(storedState, state) {
+  if (!state || state !== storedState) throw new Error('state_mismatch');
+}
+
 module.exports = {
-  getStateCookieAndLoginUrl,
+  getCookiesAndLoginUrl,
   getAccessAndRefreshToken,
   refreshAccessToken
 };

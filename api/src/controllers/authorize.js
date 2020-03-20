@@ -3,29 +3,40 @@ const querystring = require('querystring');
 const authorize = require('../services/authorize');
 
 async function redirectToLogin(req, res) {
-  const { stateCookie, loginUrl } = authorize.getStateCookieAndLoginUrl();
+  try {
+    const { cookies, loginUrl } = authorize.getCookiesAndLoginUrl(
+      req.query.redirect_uri || null
+    );
 
-  res.cookie(stateCookie.key, stateCookie.value);
-  res.redirect(loginUrl);
+    for (let key in cookies) {
+      res.cookie(key, cookies[key]);
+    }
+
+    res.redirect(loginUrl);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 }
 
 async function handleLoginCallback(req, res) {
   try {
     const {
-      acccessToken,
-      refreshToken
+      accessToken,
+      refreshToken,
+      redirectUri
     } = await authorize.getAccessAndRefreshToken(
       req.query.code || null,
       req.query.state || null,
-      req.cookies ? req.cookies['spotify_auth_state'] : null
+      req.cookies || null
     );
 
     res.clearCookie('spotify_auth_state');
+    res.clearCookie('historify_redirect_uri');
 
     res.redirect(
-      '/#' +
+      `${redirectUri}?` +
         querystring.stringify({
-          access_token: acccessToken,
+          access_token: accessToken,
           refresh_token: refreshToken
         })
     );
