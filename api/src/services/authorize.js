@@ -1,12 +1,11 @@
 const querystring = require('querystring');
 const axios = require('axios');
-const { spotify, authorize } = require('../config/env');
+const { spotify } = require('../config/env');
 
-const { generateRandomString } = require('../utils/string');
+const { CustomError } = require('../helpers/error');
+const { generateRandomString } = require('../helpers/string');
 
 function getCookiesAndLoginUrl(redirectUri) {
-  validateRedirectUri(redirectUri);
-
   const state = generateRandomString(16);
 
   const loginUrl =
@@ -25,13 +24,7 @@ function getCookiesAndLoginUrl(redirectUri) {
   };
 }
 
-async function getAccessAndRefreshToken(code, state, cookies) {
-  if (cookies === null) throw new Error('invalid_cookies');
-
-  validateRedirectUri(cookies['historify_redirect_uri']);
-
-  validateState(cookies['spotify_auth_state'], state);
-
+async function getAccessAndRefreshToken(code) {
   const body = {
     code: code,
     redirect_uri: spotify.redirectUri,
@@ -58,12 +51,10 @@ async function getAccessAndRefreshToken(code, state, cookies) {
 
     return {
       accessToken: response.data.access_token,
-      refreshToken: response.data.refresh_token,
-      redirectUri: cookies['historify_redirect_uri']
+      refreshToken: response.data.refresh_token
     };
   } catch (err) {
-    console.log(err);
-    throw new Error('invalid_token');
+    throw new CustomError('invalid_token');
   }
 }
 
@@ -93,18 +84,8 @@ async function refreshAccessToken(refreshToken) {
 
     return response.data.access_token;
   } catch (err) {
-    console.log(err);
-    throw new Error('refresh_failed');
+    throw new CustomError(500, 'refresh_failed');
   }
-}
-
-function validateRedirectUri(redirectUri) {
-  if (!redirectUri || !authorize.redirectUris.includes(redirectUri))
-    throw new Error('invalid_redirect_uri');
-}
-
-function validateState(storedState, state) {
-  if (!state || state !== storedState) throw new Error('state_mismatch');
 }
 
 module.exports = {
