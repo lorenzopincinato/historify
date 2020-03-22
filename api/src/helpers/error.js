@@ -19,10 +19,7 @@ function customErrorHandler(err, req, res, next) {
     const message = err.message || 'unexpected_error';
 
     if (isQuery)
-      res.redirect(
-        statusCode,
-        `/#?${querystring.stringify({ error: message })}`
-      );
+      res.redirect(`/#?${querystring.stringify({ error: message })}`);
     else res.status(statusCode).json({ error: message });
   } else {
     next(err);

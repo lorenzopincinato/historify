@@ -13,13 +13,13 @@ function validateRedirectUriQuery(req, res, next) {
 }
 
 function validateRedirectUriCookie(req, res, next) {
-  if (!redirectUriIsValid(req.cookies.historify_redirect_uri))
+  if (!redirectUriIsValid(req.cookie.historify_redirect_uri))
     throw new CustomError(400, 'invalid_redirect_uri', true);
   else next();
 }
 
 function validateState(req, res, next) {
-  if (!req.query.state || req.query.state !== req.cookies.spotify_auth_state)
+  if (!req.query.state || req.query.state !== req.cookie.spotify_auth_state)
     throw new CustomError(400, 'sate_mismatch', true);
   else next();
 }
