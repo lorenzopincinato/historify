@@ -1,0 +1,6 @@
+api/build/
+api/node_modules/
+
+client/build/
+client/node_modules/
+client/src/serviceWorker.js
