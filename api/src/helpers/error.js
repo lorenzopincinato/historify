@@ -1,3 +1,5 @@
+const querystring = require('querystring');
+
 class CustomError extends Error {
   constructor(statusCode, message, query = false) {
     super();
@@ -19,7 +21,7 @@ function customErrorHandler(err, req, res, next) {
     if (isQuery)
       res.redirect(
         statusCode,
-        '/#?' + querystring.stringify({ error: message })
+        `/#?${querystring.stringify({ error: message })}`
       );
     else res.status(statusCode).json({ error: message });
   } else {

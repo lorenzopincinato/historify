@@ -13,7 +13,7 @@ async function getAccessAndRefreshToken(code) {
   try {
     const {
       accessToken,
-      refreshToken
+      refreshToken,
     } = await authorize.getAccessAndRefreshToken(code);
 
     return { accessToken: accessToken, refreshToken: refreshToken };
@@ -35,5 +35,5 @@ async function refreshAccessToken(refreshToken) {
 module.exports = {
   getStateAndLoginUrl,
   getAccessAndRefreshToken,
-  refreshAccessToken
+  refreshAccessToken,
 };

@@ -4,7 +4,7 @@ const authorize = require('../controllers/authorize');
 const {
   validateRedirectUriQuery,
   validateRedirectUriCookie,
-  validateState
+  validateState,
 } = require('../validators/authorize');
 
 const router = express.Router();
