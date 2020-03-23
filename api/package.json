@@ -13,7 +13,18 @@
   },
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "test": "jest"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "globalSetup": "./src/setupTests.js",
+    "testMatch": [
+      "**/__tests__/?(*.)(test).js"
+    ],
+    "coveragePathIgnorePatterns": [
+      "./node_modules/"
+    ]
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -25,6 +36,9 @@
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "jest": "^25.1.0",
+    "nodemon": "^2.0.2",
+    "set-cookie-parser": "^2.4.3",
+    "supertest": "^4.0.2"
   }
 }
