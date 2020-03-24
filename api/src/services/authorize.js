@@ -18,7 +18,7 @@ async function getAccessAndRefreshToken(code) {
 
     return { accessToken: accessToken, refreshToken: refreshToken };
   } catch (err) {
-    throw new CustomError(500, 'invalid_code', true);
+    throw new CustomError({ query: true });
   }
 }
 
@@ -28,7 +28,7 @@ async function refreshAccessToken(refreshToken) {
 
     return accessToken;
   } catch (err) {
-    throw new CustomError(500, 'refresh_failed');
+    throw new CustomError({ statusCode: 500, message: 'refresh_failed' });
   }
 }
 

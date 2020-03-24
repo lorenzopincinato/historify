@@ -1,25 +1,20 @@
 const querystring = require('querystring');
 
 class CustomError extends Error {
-  constructor(statusCode, message, query = false) {
+  constructor(options) {
     super();
     this.custom = true;
-    this.statusCode = statusCode;
-    this.message = message;
-    this.query = query;
+    this.statusCode = options.statusCode || 500;
+    this.message = options.message || 'unexpected_error';
+    this.query = options.query || false;
   }
 }
 
 function customErrorHandler(err, req, res, next) {
-  const isCustom = err.custom;
+  const { custom, query, statusCode, message } = err;
 
-  if (isCustom) {
-    const isQuery = err.query;
-    const statusCode = err.statusCode || 500;
-    const message = err.message || 'unexpected_error';
-
-    if (isQuery)
-      res.redirect(`/#?${querystring.stringify({ error: message })}`);
+  if (custom) {
+    if (query) res.redirect(`#?${querystring.stringify({ error: message })}`);
     else res.status(statusCode).json({ error: message });
   } else {
     next(err);
@@ -31,4 +26,8 @@ function errorHandler(err, req, res, next) {
   res.status(500).json({ error: 'unexpected_error' });
 }
 
-module.exports = { CustomError, customErrorHandler, errorHandler };
+module.exports = {
+  CustomError,
+  customErrorHandler,
+  errorHandler,
+};
