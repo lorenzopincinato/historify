@@ -109,8 +109,8 @@ describe('GET /api/authorize/callback', () => {
     });
   });
 
-  describe("return 'unexpected_error' error", () => {
-    it('when has valid cookies, query and Spotify API is down', async () => {
+  describe("should return 'unexpected_error' error", () => {
+    it('when has valid cookies, query and Spotify API return error', async () => {
       mockAxios.post = jest.fn().mockRejectedValueOnce({});
 
       const state = helper.generateState();
@@ -242,6 +242,82 @@ describe('GET /api/authorize/callback', () => {
       expect(res.status).toBe(302);
       expect(res.header.location).toMatch('#');
       expect(query.error).toBe('state_mismatch');
+    });
+  });
+});
+
+async function getAuthorizeRefreshToken(refreshToken) {
+  return request(app).get(
+    `/api/authorize/token?${querystring.stringify({
+      refresh_token: refreshToken,
+    })}`
+  );
+}
+
+describe('GET /api/authorize/token', () => {
+  describe("should return 'accessToken'", () => {
+    it("when has valid 'refresh_token' and Spotify API is up", async () => {
+      const accessToken = helper.generateToken();
+
+      mockAxios.post = jest.fn().mockResolvedValueOnce({
+        data: {
+          access_token: accessToken,
+        },
+      });
+
+      const refreshToken = helper.generateToken();
+
+      const res = await getAuthorizeRefreshToken(refreshToken);
+
+      expect(res.status).toBe(200);
+      expect(res.body.access_token).toBe(accessToken);
+
+      expect(mockAxios.post).toHaveBeenCalledTimes(1);
+      expect(mockAxios.post).toHaveBeenCalledWith(
+        'https://accounts.spotify.com/api/token',
+        querystring.stringify({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${Buffer.from(
+              `${env.spotify.clientId}:${env.spotify.clientSecret}`
+            ).toString('base64')}`,
+          },
+        }
+      );
+    });
+  });
+
+  describe("should return 'refresh_failed' error", () => {
+    it("when has valid 'refresh_token' and Spotify API return error", async () => {
+      mockAxios.post = jest.fn().mockRejectedValueOnce({});
+
+      const refreshToken = helper.generateToken();
+
+      const res = await getAuthorizeRefreshToken(refreshToken);
+
+      expect(res.status).toBe(500);
+      expect(res.body.error).toBe('refresh_failed');
+
+      expect(mockAxios.post).toHaveBeenCalledTimes(1);
+      expect(mockAxios.post).toHaveBeenCalledWith(
+        'https://accounts.spotify.com/api/token',
+        querystring.stringify({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+        }),
+        {
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Basic ${Buffer.from(
+              `${env.spotify.clientId}:${env.spotify.clientSecret}`
+            ).toString('base64')}`,
+          },
+        }
+      );
     });
   });
 });

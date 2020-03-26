@@ -19,6 +19,6 @@ router
     authorize.handleLoginCallback
   );
 
-router.route('/refresh_token').get(authorize.refreshAccessToken);
+router.route('/token').get(authorize.refreshAccessToken);
 
 module.exports = router;
