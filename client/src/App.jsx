@@ -1,14 +1,8 @@
 import React from 'react';
-import { Text, ThemeProvider } from '@chakra-ui/core';
+import Layout from './components/Layout';
 
-import theme from './config/theme';
-
-function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <Text>Historify</Text>
-    </ThemeProvider>
-  );
-}
+const App = () => {
+  return <Layout />;
+};
 
 export default App;
