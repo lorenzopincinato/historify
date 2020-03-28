@@ -17,7 +17,7 @@ const LayoutHeading = () => {
       <Divider />
       <Flex direction="column" align="center" justify="center" marginY="3rem">
         <Flex direction="row" align="center">
-          <Text fontSize="sm">Developed with</Text>
+          <Text fontSize="sm">Under development with </Text>
           <Box as={AiFillHeart} fontSize="sm" marginX="0.2rem" />
           <Text fontSize="sm">by Lorenzo Pincinato</Text>
         </Flex>

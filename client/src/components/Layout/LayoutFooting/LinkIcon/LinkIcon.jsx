@@ -5,7 +5,7 @@ const LinkIcon = props => {
   const { href } = props;
   const { colorMode } = useColorMode();
 
-  const iconColor = { light: 'gray.400', dark: 'gray.600' };
+  const iconColor = { light: 'gray.400', dark: 'gray.500' };
 
   return (
     <Link
