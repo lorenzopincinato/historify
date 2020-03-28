@@ -1,14 +1,12 @@
 import React from 'react';
 import { useColorMode, IconButton } from '@chakra-ui/core';
 
-const ColorModeButton = () => {
+const ColorModeButton = props => {
   const { colorMode, toggleColorMode } = useColorMode();
+  const icon = { light: 'moon', dark: 'sun' };
 
   return (
-    <IconButton
-      icon={colorMode === 'light' ? 'moon' : 'sun'}
-      onClick={toggleColorMode}
-    />
+    <IconButton icon={icon[colorMode]} onClick={toggleColorMode} {...props} />
   );
 };
 
